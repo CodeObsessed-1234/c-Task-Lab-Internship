@@ -30,7 +30,7 @@ class orginization{
             arr_name.push_back(name);
             arr_emp_id.push_back(id);
         }
-        void EditEmployee(int id, int ID)
+        void EditEmployee(int id)
         {
             string name_change;
             int age_change;
@@ -50,19 +50,13 @@ class orginization{
                 cin >> name_change;
                 cout << "Enter Age:- ";
                 cin >> age_change;
-                for (int i = 0; i < arr_emp_id.size(); ++i)
-                {
-                    if (id == arr_emp_id[i])
-                    {
-                        arr_name[i] = name_change;
-                        arr_age[i] = age_change;
-                    }
-                }
+                arr_name[id-1] = name_change;
+                arr_age[id-1] = age_change;
             }
             else{
                 cout<<"Employee doesn't exist"<<endl;
             }
-            
+
         }
         void DeleteEmployee(int id)
         {
@@ -116,18 +110,27 @@ class orginization{
         void EditDepartment(int id)
         {
             string department_change;
+            int check=0;
             cout << "Enter Department:- ";
             cin >> department_change;
             for (int i = 0; i < arr_emp_id.size(); ++i)
             {
                 if (id == arr_emp_id[i])
                 {
-                    cout << "Enter Department:- ";
-                    cin >> department_change;
-                    arr_department[i] = department_change;
+                    cout<<arr_department[i]<<endl;
+                    check=1;
                     break;
                 }
             }
+            if(check==1){
+                cout << "Enter Department:- ";
+                cin >> department_change;
+                arr_department[id-1] = department_change;
+            }
+            else{
+                cout<<"Department dosen't exist"<<endl;
+            }
+
         }
         void DeleteDepartment(int id)
         {
@@ -144,41 +147,46 @@ class orginization{
         void ListDepartment()
         {
             char key;
-            for (int i = 0; i < arr_emp_id.size(); ++i)
+
+            if (arr_emp_id.size() == 0)
             {
-                if (i>0&&i%5==0)
+                cout << "No Entry\n";
+            }
+            else{
+                for (int i = 0; i < arr_emp_id.size(); ++i)
                 {
-                    cout << "\nPress N/n for next page" << endl;
-                    cin >> key;
-                    if (key == 'n' || key == 'N')
+                    if (i>0&&i%5==0)
                     {
-                        system("cls");
-                        
+                        cout << "\nPress N/n for next page" << endl;
+                        cin >> key;
+                        if (key == 'n' || key == 'N')
+                        {
+                            system("cls");
+
+                        }
+                        else
+                        {
+                            cout << "\nWrong input\n";
+                            break;
+                        }
                     }
-                    else
-                    {
-                        cout << "\nWrong input\n";
-                        break;
-                    }
+
+                    cout << arr_department[i] << endl;
                 }
-                
-                cout << arr_department[i] << endl;
-                
-               
             }
         }
 };
 
 
 
-class employeeManagment: public orginization 
+class employeeManagment: public orginization
 {
- 
+
 };
 
 class departmentManagment: public orginization
 {
-    
+
 };
 
 int main()
@@ -213,7 +221,7 @@ int main()
                 cout << "Enter Emp_choice:- ";
                 cin >> emp_choice;
                 cout << endl;
-                
+
                 if (emp_choice == 1)
                 {
                     ++emp_ID;
@@ -223,7 +231,7 @@ int main()
                 {
                     cout << "Enter ID:- ";
                     cin >> ID_check;
-                    emp.EditEmployee(ID_check, emp_ID);
+                    emp.EditEmployee(ID_check);
                 }
                 else if (emp_choice == 3)
                 {
@@ -263,7 +271,7 @@ int main()
                 else
                 {
                     cout << "Wrong input\n";
-                    
+
                 }
             }
         }
@@ -308,7 +316,7 @@ int main()
                 else
                 {
                     cout << "Wrong input\n";
-                    
+
                 }
             }
         }
@@ -316,8 +324,9 @@ int main()
         else{
             break;
         }
-        
+
     }
 
     return 0;
 }
+
