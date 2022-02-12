@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include<stdlib.h>
+#include<algorithm>
 using namespace std;
 
 class orginization{
@@ -12,23 +13,38 @@ class orginization{
         vector<int> arr_emp_id;
         string department;
         vector<string> arr_department;
+        vector<int> arr_dep_id;
+};
+
+
+
+class employeeManagment: public orginization
+{
+    public:
         void AddEmployee(int id)
         {
             cout << "Enter Name:- ";
             cin >> name;
             cout << "Enter Age:- ";
             cin >> age;
+            int check=0;
             for (int i = 0; i < arr_name.size(); ++i)
             {
                 if (name == arr_name[i])
                 {
-                    cout << "Entry already there\n";
+                    check=1;
                     break;
                 }
             }
-            arr_age.push_back(age);
-            arr_name.push_back(name);
-            arr_emp_id.push_back(id);
+            if(check==0){
+                arr_age.push_back(age);
+                arr_name.push_back(name);
+                arr_emp_id.push_back(id);
+            }
+            else{
+                cout << "Entry already there\n";
+            }
+            
         }
         void EditEmployee(int id)
         {
@@ -60,14 +76,20 @@ class orginization{
         }
         void DeleteEmployee(int id)
         {
+            int check=0;
             for (int i = 0; i < arr_emp_id.size(); ++i)
             {
                 if (id == arr_emp_id[i])
                 {
-                    arr_name.erase(arr_name.begin() + i);
+                    check=1;
+                    arr_name.erase(arr_name.begin()+i);
+                    arr_age.erase(arr_age.begin()+i);
                     arr_emp_id.pop_back();
+                    break;
                 }
-                else
+            }
+            if(check==0){
+                for (int i = 0; i < arr_emp_id.size(); ++i)
                 {
                     cout << "Name:- " << arr_name[i] << endl;
                     cout << "Age:- " << arr_age[i] << "\n\n";
@@ -95,27 +117,88 @@ class orginization{
             {
                 for (int i = 0; i < arr_emp_id.size(); ++i)
                 {
-                    cout << "Name:- " << arr_name[i] << endl;
-                    cout << "Age:- " << arr_age[i] << "\n\n";
+                    cout <<arr_emp_id[i]<<"-"<<"   Name:- " << arr_name[i] << endl;
+                    cout <<"     Age:- " << arr_age[i] << "\n\n";
                 }
             }
         }
+
+        void SortEmployeeAge(){
+            string temp_name;
+            int temp_age;
+            for(int i=0;i<arr_age.size()-1;++i){
+                temp_name=arr_name[i];
+                temp_age=arr_age[i];
+                for(int j=i+1;j<arr_age.size();++j){
+                    if(arr_age[i]>arr_age[j]){
+                        arr_age[i]=arr_age[j];
+                        arr_age[j]=temp_age;
+                        arr_name[i]=arr_name[j];
+                        arr_name[j]=temp_name;
+                    }
+                }
+            }
+        }
+
+        void SearchEmployeeByID(){
+            int id;
+            cout<<"Enter ID:- ";
+            cin>>id;
+            int start=0;
+            int end=arr_name.size();
+            while(start<=end){
+                int mid=start+(end-1)/2;
+                if(arr_emp_id[mid]==id){
+                    cout<<"\nFound\n";
+                    cout<<"Name:- "<<arr_name[mid]<<endl;
+                    cout<<"Age:- "<<arr_age[mid]<<endl;
+                    break;
+                }
+                else if(arr_emp_id[mid]>id){
+                    end=mid-1;
+                }
+                else{
+                    start=mid+1;
+                }
+            }
+            if(start>end){
+                cout<<"\nNot Found\n";
+            }   
+        }
+};
+
+class departmentManagment: public orginization
+{
+    public:
         void AddDepartment(int id)
         {
+            
             cout << "Enter Department:- ";
             cin >> department;
-            arr_department.push_back(department);
-            arr_emp_id.push_back(id);
+            int check=0;
+            for (int i = 0; i < arr_name.size(); ++i)
+            {
+                if (department == arr_department[i])
+                {
+                    check=1;
+                    break;
+                }
+            }
+            if(check==0){
+                arr_department.push_back(department);
+                arr_dep_id.push_back(id);
+            }
+            else{
+                cout << "Entry already there\n";
+            }
         }
         void EditDepartment(int id)
         {
             string department_change;
             int check=0;
-            cout << "Enter Department:- ";
-            cin >> department_change;
-            for (int i = 0; i < arr_emp_id.size(); ++i)
+            for (int i = 0; i < arr_dep_id.size(); ++i)
             {
-                if (id == arr_emp_id[i])
+                if (id == arr_dep_id[i])
                 {
                     cout<<arr_department[i]<<endl;
                     check=1;
@@ -134,13 +217,22 @@ class orginization{
         }
         void DeleteDepartment(int id)
         {
-            for (int i = 0; i < arr_emp_id.size(); ++i)
+            int check=0;
+            for (int i = 0; i < arr_dep_id.size(); ++i)
             {
-                if (id == arr_emp_id[i])
+                if (id == arr_dep_id[i])
                 {
-                    arr_department.erase(arr_department.begin() + i);
-                    arr_emp_id.pop_back();
+                    check=1;
+                    arr_department.erase(arr_department.begin()+i);
+                    arr_dep_id.pop_back();
                     break;
+                }
+            }
+            if(check==0){
+                for (int i = 0; i < arr_dep_id.size(); ++i)
+                {
+                    cout << "Department:- " << arr_department[i] << "\n\n";
+                    
                 }
             }
         }
@@ -148,12 +240,12 @@ class orginization{
         {
             char key;
 
-            if (arr_emp_id.size() == 0)
+            if (arr_dep_id.size() == 0)
             {
                 cout << "No Entry\n";
             }
             else{
-                for (int i = 0; i < arr_emp_id.size(); ++i)
+                for (int i = 0; i < arr_dep_id.size(); ++i)
                 {
                     if (i>0&&i%5==0)
                     {
@@ -171,22 +263,41 @@ class orginization{
                         }
                     }
 
-                    cout << arr_department[i] << endl;
+                    cout <<arr_dep_id[i]<<"-  "<<arr_department[i] << endl;
                 }
             }
         }
-};
+
+        void SortDepartment(){
+            sort(arr_department.begin(),arr_department.end());
+        }
 
 
+        void SearchDepartmentByID(){
+            int id;
+            cout<<"Enter ID:- ";
+            cin>>id;
+            int start=0;
+            int end=arr_department.size();
+            while(start<=end){
+                int mid=start+(end-1)/2;
+                if(arr_dep_id[mid]==id){
+                    cout<<"\nFound\n";
+                    cout<<arr_department[mid]<<endl;
+                    break;
+                }
+                else if(arr_dep_id[mid]>id){
+                    end=mid-1;
+                }
+                else{
+                    start=mid+1;
+                }
+            }
+            if(start>end){
+                cout<<"\nNot Found\n";
+            }   
 
-class employeeManagment: public orginization
-{
-
-};
-
-class departmentManagment: public orginization
-{
-
+        }
 };
 
 int main()
@@ -213,10 +324,13 @@ int main()
                      << "Press 2 for Edit Employee\n"
                      << "Press 3 for Delete Employee\n"
                      << "Press 4 for All Employees\n"
-                     << "Press 5 for Add Employee_Department\n"
-                     << "Press 6 for Edit Employee_Department\n"
-                     << "Press 7 for Delete Employee_Department\n"
-                     << "Press 8 for All Employee_Department\n"
+                     <<"Press 5 for Sorting\n"
+                     <<"Press 6 for Searching\n"
+                     << "Press 7 for Add Employee_Department\n"
+                     << "Press 8 for Edit Employee_Department\n"
+                     << "Press 9 for Delete Employee_Department\n"
+                     << "Press 10 for All Employee_Department\n"
+                     << "Press 11 for Sorting\n"
                      << "Press -1 for exit\n\n";
                 cout << "Enter Emp_choice:- ";
                 cin >> emp_choice;
@@ -243,26 +357,36 @@ int main()
                 {
                     emp.EmployeeList();
                 }
-                else if (emp_choice == 5)
+                else if(emp_choice == 5){
+                    emp.SortEmployeeAge();
+
+                }
+                else if(emp_choice == 6){
+                    emp.SearchEmployeeByID();
+                }
+                else if (emp_choice == 7)
                 {
                     dep.AddDepartment(dep_ID);
                     ++dep_ID;
                 }
-                else if (emp_choice == 6)
+                else if (emp_choice == 8)
                 {
                     cout << "Enter ID:-";
                     cin >> ID_check;
                     dep.EditDepartment(ID_check);
                 }
-                else if (emp_choice == 7)
+                else if (emp_choice == 9)
                 {
                     cout << "Enter ID:-";
                     cin >> ID_check;
                     dep.DeleteDepartment(ID_check);
                 }
-                else if (emp_choice == 8)
+                else if (emp_choice == 10)
                 {
                     dep.ListDepartment();
+                }
+                else if(emp_choice == 11){
+                    dep.SortDepartment();
                 }
                 else if (emp_choice == -1)
                 {
@@ -283,6 +407,8 @@ int main()
                     << "Press 2 for Edit Department\n"
                     << "Press 3 for Delete Department\n"
                     << "Press 4 for All Department\n"
+                    <<"Press 5 for Sorting\n"
+                    <<"Press 6 for Searching\n"
                     << "Press -1 for exit\n\n";
                 cout << endl;
 
@@ -291,8 +417,9 @@ int main()
                 cout << endl;
                 if (dep_choice == 1)
                 {
-                    dep.AddDepartment(dep_ID);
                     ++dep_ID;
+                    dep.AddDepartment(dep_ID);
+                    
                 }
                 else if (dep_choice == 2)
                 {
@@ -309,6 +436,12 @@ int main()
                 else if (dep_choice == 4)
                 {
                     dep.ListDepartment();
+                }
+                else if( dep_choice == 5){
+                    dep.SortDepartment();
+                }
+                else if( dep_choice == 6){
+                     dep.SearchDepartmentByID();
                 }
                 else if(dep_choice==-1){
                     break;
