@@ -14,6 +14,7 @@ class orginization{
         string department;
         vector<string> arr_department;
         vector<int> arr_dep_id;
+        
         void Add(char choice,int id){
             if(choice=='e'||choice=='E'){
                 cout << "Enter Name:- ";
@@ -380,11 +381,6 @@ int main()
                      << "Press 4 for All Employees\n"
                      <<"Press 5 for Sorting By Age\n"
                      <<"Press 6 for Searching\n"
-                     << "Press 7 for Add Employee_Department\n"
-                     << "Press 8 for Edit Employee_Department\n"
-                     << "Press 9 for Delete Employee_Department\n"
-                     << "Press 10 for All Employee_Department\n"
-                     << "Press 11 for Sorting\n"
                      << "Press -1 for exit\n\n";
                 cout << "Enter Emp_choice:- ";
                 cin >> emp_choice;
@@ -417,30 +413,6 @@ int main()
                 }
                 else if(emp_choice == 6){
                     emp.SearchEmployeeByID(choice);
-                }
-                else if (emp_choice == 7)
-                {
-                    dep.AddDepartment(choice,dep_ID);
-                    ++dep_ID;
-                }
-                else if (emp_choice == 8)
-                {
-                    cout << "Enter ID:-";
-                    cin >> ID_check;
-                    dep.EditDepartment(choice,ID_check);
-                }
-                else if (emp_choice == 9)
-                {
-                    cout << "Enter ID:-";
-                    cin >> ID_check;
-                    dep.DeleteDepartment(choice,ID_check);
-                }
-                else if (emp_choice == 10)
-                {
-                    dep.ListDepartment(choice);
-                }
-                else if(emp_choice == 11){
-                    dep.SortDepartment(choice);
                 }
                 else if (emp_choice == -1)
                 {
@@ -516,5 +488,3 @@ int main()
 
     return 0;
 }
-
-
